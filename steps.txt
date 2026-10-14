@@ -1,0 +1,79 @@
+=========================
+FRESH GCLOUD LOGIN
+===========================
+gcloud auth login
+[EMAIL_ADDRESS]: student-01-0fa8d56bb007@qwiklabs.net
+
+======
+SET PROJECT
+===========================
+gcloud config set project [GCP_PROJECT_ID] : qwiklabs-gcp-04-fde27e91bd58
+
+
+
+1. Flush All Active Accounts & Application Defaults
+
+Run these commands to revoke your tokens and clean up any local application default credentials (ADC):
+bash
+gcloud auth revoke --all
+gcloud auth application-default revoke
+
+2. Wipe Out the Local Config Directory
+
+rm -rf ~/.config/gcloud
+
+3. Clear Environment Variables
+
+bash
+env | grep -E "GOOGLE|GCLOUD"
+
+If you see variables like GOOGLE_APPLICATION_CREDENTIALS or GOOGLE_CLOUD_PROJECT active and want them gone, you can clear them for the current session using:
+bash
+unset GOOGLE_APPLICATION_CREDENTIALS
+unset GOOGLE_CLOUD_PROJECT
+
+Verify You Are Logged Out
+Run this command to make sure no credentials or active accounts remain:
+
+bash
+gcloud auth list
+It should return an empty list or show no active accounts.
+
+
+
+
+===============================
+
+How To create a fresh login gcloud ?
+
+===============================
+To perform a completely fresh login and reinitialize your environments or profiles on your Mac, follow these terminal steps:
+
+Generate Application Default Credentials (ADC)
+
+bash
+gcloud auth application-default login
+Would you like to create a dedicated profile name (such as gcp-dev) right away, or do you need help finding your Project ID to link it to this new login?
+
+
+gcloud components update
+
+gcloud config configurations create gcp-dev
+
+gcloud auth login
+
+gcloud auth application-default login
+
+
+
+
+
+
+============================
+CREATE CLOUD RUN SERVICE
+===========================
+gcloud run deploy agent-on-cloudrun-service \
+  --image gcr.io/[GCP_PROJECT_ID]/agent-on-cloudrun-service:latest \
+  --region us-central1 \
+  --platform managed \
+  --allow-unauthenticated

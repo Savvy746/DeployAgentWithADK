@@ -1,0 +1,104 @@
+=========================
+FRESH GCLOUD LOGIN
+===========================
+gcloud auth login
+[EMAIL_ADDRESS]: student-01-0fa8d56bb007@qwiklabs.net
+
+======
+SET PROJECT
+===========================
+gcloud config set project [GCP_PROJECT_ID] : qwiklabs-gcp-04-fde27e91bd58
+
+
+To completely flush all gcloud credentials and cached profiles on your Mac, execute the following steps in your Terminal:
+
+1. Flush All Active Accounts & Application Defaults
+
+Run these commands to revoke your tokens and clean up any local application default credentials (ADC):
+bash
+gcloud auth revoke --all
+gcloud auth application-default revoke
+Use code with caution.
+
+2. Wipe Out the Local Config Directory
+
+To ensure old, sticky, or broken profiles are completely deleted for a truly fresh start, completely remove the hidden gcloud settings folder from your home directory:
+bash
+rm -rf ~/.config/gcloud
+Use code with caution.
+
+3. Clear Environment Variables
+
+Sometimes your terminal session might still be holding onto explicit environment variables. Check your current session to see if any project or credential overrides are active:
+bash
+env | grep -E "GOOGLE|GCLOUD"
+Use code with caution.
+If you see variables like GOOGLE_APPLICATION_CREDENTIALS or GOOGLE_CLOUD_PROJECT active and want them gone, you can clear them for the current session using:
+bash
+unset GOOGLE_APPLICATION_CREDENTIALS
+unset GOOGLE_CLOUD_PROJECT
+Use code with caution.
+
+Verify You Are Logged Out
+
+Run this command to make sure no credentials or active accounts remain:
+bash
+gcloud auth list
+Use code with caution.
+It should return an empty list or show no active accounts.
+Are you planning to reconfigure a fresh profile now, or do you need to check if your shell profile (like .zshrc) is still setting any persistent environment variables?
+
+
+
+
+===============================
+
+How To create a fresh login gcloud ?
+
+===============================
+To perform a completely fresh login and reinitialize your environments or profiles on your Mac, follow these terminal steps:
+
+1. The Full Setup Flow (Recommended)
+
+Since you completely nuked your old configurations, running gcloud init is the cleanest way to log back in. It will simultaneously authenticate your account, let you select or create a profile, and connect a default project. [1] (https://www.youtube.com/watch?v=q8jed3aU_FY), [2] (https://docs.cloud.google.com/sdk/docs/initialize)
+Run this in your terminal:
+bash
+gcloud init
+Use code with caution.
+What will happen next:
+1. Your terminal will automatically open a tab in your default web browser (Safari or Chrome).
+2. Sign in with your target Google Cloud account.
+3. Grant permissions to the Google Cloud SDK when prompted.
+4. Return to your terminal, where it will prompt you to choose or create a project and select a default compute zone. [1] (https://dev.to/jajera/best-practice-set-up-gcloud-auth-and-application-default-credentials-adc-3dhk), [2] (https://oneuptime.com/blog/post/2026-02-17-how-to-install-and-configure-the-gcloud-cli-on-macos-linux-and-windows/view), [3] (https://www.youtube.com/watch?v=hDhg3-8hzmo), [4] (https://www.youtube.com/watch?v=3wPl-AnegI4&t=373), [5] (https://www.youtube.com/watch?v=q8jed3aU_FY)
+
+2. Alternative: Log In Separately
+
+If you prefer to only authenticate your user account first without walking through the full setup wizard, you can run:
+bash
+gcloud auth login
+Use code with caution.
+Note: This just handles the account connection flow. You will still need to map a project later using gcloud config set project [PROJECT_ID]. [1] (https://docs.cloud.google.com/sdk/docs/initialize), [2] (https://www.youtube.com/watch?v=q8jed3aU_FY)
+
+3. Generate Application Default Credentials (ADC)
+
+If you are developing local code (like Python scripts using the google-cloud-* packages), you must also regenerate your local development tokens so they can find your fresh account: [1] (https://oneuptime.com/blog/post/2026-02-17-how-to-install-and-configure-the-gcloud-cli-on-macos-linux-and-windows/view)
+bash
+gcloud auth application-default login
+Use code with caution.
+(This will trigger a second quick browser validation to securely map the local file at ~/.config/gcloud/application_default_credentials.json.) [1] (https://dev.to/jajera/best-practice-set-up-gcloud-auth-and-application-default-credentials-adc-3dhk), [2] (https://oneuptime.com/blog/post/2026-02-17-how-to-install-and-configure-the-gcloud-cli-on-macos-linux-and-windows/view)
+Would you like to create a dedicated profile name (such as gcp-dev) right away, or do you need help finding your Project ID to link it to this new login?
+
+
+
+
+
+
+
+============================
+CREATE CLOUD RUN SERVICE
+===========================
+gcloud run deploy agent-on-cloudrun-service \
+  --image gcr.io/[GCP_PROJECT_ID]/agent-on-cloudrun-service:latest \
+  --region us-central1 \
+  --platform managed \
+  --allow-unauthenticated
