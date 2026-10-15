@@ -16,7 +16,9 @@ client = vertexai.Client(
     location=location,
 )
 
-agent = client.agent_engines.get(name="YOUR_AGENT_RESOURCE_NAME")
+agent = client.agent_engines.get(name="projects/764954081879/locations/us-central1/reasoningEngines/4053970015232196608")
+#agent_engine = vertexai.agent_engines.get('projects/764954081879/locations/us-central1/reasoningEngines/4053970015232196608')
+
 
 def convert_img_tags_to_chainlit_images(msg):
     img_list = []
